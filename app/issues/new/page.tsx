@@ -1,5 +1,5 @@
 "use client";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button, Text, TextField } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -7,18 +7,25 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Callout } from "@radix-ui/themes";
+import { z } from "zod";
+import { createIssueSchema } from "@/app/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface IssueFormValue {
-  title: string;
-  description: string;
-}
+type IssueSchema = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
-  const { register, control, handleSubmit } = useForm<IssueFormValue>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueSchema>({
+    resolver: zodResolver(createIssueSchema),
+  });
   const router = useRouter();
   const [error, setError] = useState("");
 
-  const onSubmit: SubmitHandler<IssueFormValue> = async (data, event) => {
+  const onSubmit: SubmitHandler<IssueSchema> = async (data, event) => {
     try {
       await axios.post("/api/issues", data);
       router.push("/issues");
@@ -38,6 +45,11 @@ const NewIssuePage = () => {
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register("title")} />
         </TextField.Root>
+        {errors.title && (
+          <Text color="red" as="p">
+            {errors.title.message}
+          </Text>
+        )}
         <Controller
           name="description"
           control={control}
@@ -45,7 +57,11 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
-
+        {errors.description && (
+          <Text color="red" as="p">
+            {errors.description.message}
+          </Text>
+        )}
         <Button>Submit New Issue</Button>
       </form>
     </div>
