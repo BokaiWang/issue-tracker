@@ -18,7 +18,6 @@ const IssueDetailsPage: FC<Props> = async ({ params }) => {
   if (!issue) {
     notFound();
   } else {
-    await delay(2000);
     return (
       <div>
         <Heading>{issue.title}</Heading>
