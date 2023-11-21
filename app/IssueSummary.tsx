@@ -19,7 +19,7 @@ const IssueSummary: FC<Props> = ({ open, inProgress, closed }) => {
   return (
     <Flex gap="3">
       {statusSections.map((section) => (
-        <Card key={section.label}>
+        <Card key={section.label} className="flex-1">
           <Flex direction="column">
             <NavLink
               className="text-sm font-medium"
@@ -27,7 +27,7 @@ const IssueSummary: FC<Props> = ({ open, inProgress, closed }) => {
             >
               {section.label}
             </NavLink>
-            <Text size="5" className=" font-bold">
+            <Text size="5" className="font-bold">
               {section.value}
             </Text>
           </Flex>
