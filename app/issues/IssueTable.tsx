@@ -1,7 +1,7 @@
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { IssueStatusBadge, Link } from "../components";
 import { Issue, Status } from "@prisma/client";
 
@@ -17,6 +17,45 @@ interface Props {
 }
 
 const IssueTable: FC<Props> = ({ searchParams, issues }) => {
+  const orderByParams = searchParams?.orderBy?.split(":");
+  const getNextOrderDirection = (column: {
+    label: string;
+    value: keyof Issue;
+    className?: string;
+  }) => {
+    if (!orderByParams) {
+      return "asc";
+    } else {
+      if (column.value !== orderByParams[0]) {
+        return "asc";
+      } else {
+        if (orderByParams[1] === "asc") {
+          return "desc";
+        } else {
+          return "asc";
+        }
+      }
+    }
+  };
+  const getArrowDirection = (column: {
+    label: string;
+    value: keyof Issue;
+    className?: string;
+  }) => {
+    if (orderByParams) {
+      if (orderByParams[0] === column.value) {
+        return orderByParams[1] === "asc" ? (
+          <ArrowUpIcon className="inline" />
+        ) : (
+          <ArrowDownIcon className="inline" />
+        );
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  };
   return (
     <Table.Root variant="surface">
       <Table.Header>
@@ -27,13 +66,18 @@ const IssueTable: FC<Props> = ({ searchParams, issues }) => {
               className={column?.className}
             >
               <NextLink
-                href={{ query: { ...searchParams, orderBy: column.value } }}
+                href={{
+                  query: {
+                    ...searchParams,
+                    orderBy: getNextOrderDirection(column)
+                      ? `${column.value}:${getNextOrderDirection(column)}`
+                      : null,
+                  },
+                }}
               >
                 {column.label}
               </NextLink>
-              {searchParams.orderBy === column.value && (
-                <ArrowUpIcon className="inline" />
-              )}
+              {getArrowDirection(column)}
             </Table.ColumnHeaderCell>
           ))}
         </Table.Row>

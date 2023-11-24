@@ -12,14 +12,18 @@ interface Props {
 }
 
 const IssuesPage: FC<Props> = async ({ searchParams }) => {
+  console.log("search params", searchParams);
   const statuses = Object.values(Status);
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
   const where = { status };
-  const orderBy = columnNames.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: "asc" }
-    : undefined;
+
+  const orderByParams = searchParams?.orderBy?.split(":");
+  const orderBy =
+    orderByParams && columnNames.includes(orderByParams[0] as keyof Issue)
+      ? { [orderByParams[0]]: orderByParams[1] }
+      : undefined;
 
   const pageSize = 10;
   const page = parseInt(searchParams.page) || 1;
