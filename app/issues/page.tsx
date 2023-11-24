@@ -12,7 +12,6 @@ interface Props {
 }
 
 const IssuesPage: FC<Props> = async ({ searchParams }) => {
-  console.log("search params", searchParams);
   const statuses = Object.values(Status);
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
@@ -25,7 +24,7 @@ const IssuesPage: FC<Props> = async ({ searchParams }) => {
       ? { [orderByParams[0]]: orderByParams[1] }
       : undefined;
 
-  const pageSize = 10;
+  const pageSize = searchParams.pageSize ? parseInt(searchParams.pageSize) : 10;
   const page = parseInt(searchParams.page) || 1;
 
   const issues = await prisma.issue.findMany({
