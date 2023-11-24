@@ -16,13 +16,15 @@ interface Props {
   issues: Issue[];
 }
 
+interface Column {
+  label: string;
+  value: keyof Issue;
+  className?: string;
+}
+
 const IssueTable: FC<Props> = ({ searchParams, issues }) => {
   const orderByParams = searchParams?.orderBy?.split(":");
-  const getNextOrderDirection = (column: {
-    label: string;
-    value: keyof Issue;
-    className?: string;
-  }) => {
+  const getNextOrderDirection = (column: Column) => {
     if (!orderByParams) {
       return "asc";
     } else {
@@ -37,11 +39,7 @@ const IssueTable: FC<Props> = ({ searchParams, issues }) => {
       }
     }
   };
-  const getArrowDirection = (column: {
-    label: string;
-    value: keyof Issue;
-    className?: string;
-  }) => {
+  const getArrowDirection = (column: Column) => {
     if (orderByParams) {
       if (orderByParams[0] === column.value) {
         return orderByParams[1] === "asc" ? (
@@ -104,7 +102,7 @@ const IssueTable: FC<Props> = ({ searchParams, issues }) => {
   );
 };
 
-const columns: { label: string; value: keyof Issue; className?: string }[] = [
+const columns: Column[] = [
   { label: "Issue", value: "title" },
   { label: "Status", value: "status", className: "hidden md:table-cell" },
   {
