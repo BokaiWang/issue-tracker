@@ -10,6 +10,7 @@ export interface IssueQuery {
   orderBy: keyof Issue;
   page: string;
   pageSize: string;
+  assignee: string;
 }
 
 interface Props {
@@ -19,7 +20,7 @@ interface Props {
 
 interface Column {
   label: string;
-  value: keyof Issue;
+  value: keyof Issue | "assignee";
   className?: string;
 }
 

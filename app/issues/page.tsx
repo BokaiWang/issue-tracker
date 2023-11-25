@@ -16,7 +16,11 @@ const IssuesPage: FC<Props> = async ({ searchParams }) => {
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
-  const where = { status };
+  const assignedToUserId = searchParams?.assignee
+    ? searchParams.assignee
+    : undefined;
+
+  const where = { status, assignedToUserId };
 
   const orderByParams = searchParams?.orderBy?.split(":");
   const orderBy =
@@ -32,7 +36,15 @@ const IssuesPage: FC<Props> = async ({ searchParams }) => {
     orderBy,
     skip: (page - 1) * pageSize,
     take: pageSize,
+    include: {
+      assignedToUser: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
+  console.log(issues);
 
   const issueCount = await prisma.issue.count({ where });
 
