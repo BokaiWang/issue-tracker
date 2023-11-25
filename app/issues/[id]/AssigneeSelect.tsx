@@ -13,6 +13,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     try {
       await axios.patch(`/api/issues/${issue.id}`, {
         assignedToUserId: userId || null,
+        status: userId ? "IN_PROGRESS" : "OPEN",
       });
     } catch (error) {
       toast.error("Changes could not be saved.");
