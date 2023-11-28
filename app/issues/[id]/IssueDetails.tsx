@@ -23,7 +23,7 @@ const IssueDetails: FC<Props> = ({ issue }) => {
       <Heading as="h2" mt="4">
         Comments
       </Heading>
-      <CommentEditor />
+      <CommentEditor issue={issue} />
     </>
   );
 };

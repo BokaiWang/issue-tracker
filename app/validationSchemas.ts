@@ -19,3 +19,7 @@ export const patchIssueSchema = z.object({
     .optional()
     .nullable(),
 });
+
+export const commentSchema = z.object({
+  description: z.string().min(1).max(65535),
+});

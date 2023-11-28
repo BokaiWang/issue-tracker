@@ -44,7 +44,6 @@ const IssuesPage: FC<Props> = async ({ searchParams }) => {
       },
     },
   });
-  console.log(issues);
 
   const issueCount = await prisma.issue.count({ where });
 
