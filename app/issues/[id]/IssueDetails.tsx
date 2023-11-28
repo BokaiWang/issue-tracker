@@ -2,8 +2,14 @@ import { IssueStatusBadge } from "@/app/components";
 import { Issue } from "@prisma/client";
 import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import Markdown from "react-markdown";
+import { FC } from "react";
+import CommentEditor from "./CommentEditor";
 
-const IssueDetails = ({ issue }: { issue: Issue }) => {
+interface Props {
+  issue: Issue;
+}
+
+const IssueDetails: FC<Props> = ({ issue }) => {
   return (
     <>
       <Heading>{issue.title}</Heading>
@@ -14,6 +20,10 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
       <Card className="prose max-w-full" mt="4">
         <Markdown>{issue.description}</Markdown>
       </Card>
+      <Heading as="h2" mt="4">
+        Comments
+      </Heading>
+      <CommentEditor />
     </>
   );
 };
