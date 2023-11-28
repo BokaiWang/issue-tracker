@@ -1,5 +1,5 @@
 import { Skeleton } from "@/app/components";
-import { Box, Card, Flex } from "@radix-ui/themes";
+import { Box, Card, Flex, Section } from "@radix-ui/themes";
 
 const IssueDetailsLoadingPage = () => {
   return (
@@ -12,6 +12,12 @@ const IssueDetailsLoadingPage = () => {
       <Card className="prose" mt="4">
         <Skeleton count={3} />
       </Card>
+      <Section size="1">
+        <Flex direction="column" gap="3">
+          <Skeleton width="8rem" />
+          <Skeleton count={5} />
+        </Flex>
+      </Section>
     </Box>
   );
 };
