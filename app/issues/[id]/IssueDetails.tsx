@@ -4,6 +4,7 @@ import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import Markdown from "react-markdown";
 import { FC } from "react";
 import CommentEditor from "./CommentEditor";
+import CommentList from "./CommentList";
 
 interface Props {
   issue: Issue;
@@ -24,6 +25,7 @@ const IssueDetails: FC<Props> = ({ issue }) => {
         Comments
       </Heading>
       <CommentEditor issue={issue} />
+      <CommentList issueId={issue.id} />
     </>
   );
 };
